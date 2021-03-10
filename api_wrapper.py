@@ -21,19 +21,22 @@ class ApiWrapper:
     def delete_a_bear(self, id):
         return requests.delete(self.host_ip + f"/bear/{id}").status_code
 
-    def add_a_bear(self, bear_type, name, description, age, mother_number):
+    def add_a_bear(self, bear_type, name, description, age, mother_number=None):
         data = {"bear_type": bear_type,
                 "name": name,
                 "description": description,
-                "age": age,
-                "mother_number": mother_number}
-        return requests.post(self.host_ip + "/bear", data).status_code
+                "age": age}
+        if mother_number is not None:
+            data["mother_number"] = mother_number
 
-    def update_a_bear(self, bear_type, name, description, age, mother_number, id):
+        return requests.post(self.host_ip + "/bear", json=data).status_code
+
+    def update_a_bear(self, id, bear_type, name, description, age, mother_number=None):
         data = {"bear_type": bear_type,
                 "name": name,
                 "description": description,
-                "age": age,
-                "mother_number": mother_number}
-        return requests.put(self.host_ip + f"/bear/{id}", data).status_code
+                "age": age}
+        if mother_number is not None:
+            data["mother_number"] = mother_number
+        return requests.put(self.host_ip + f"/bear/{id}", json=data).status_code
 
